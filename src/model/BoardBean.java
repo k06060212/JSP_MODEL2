@@ -13,8 +13,7 @@ public class BoardBean {
 	private int board_re_lev;
 	private int board_re_seq;
 	private int board_readcount;
-	private Timestamp timestamp;
-	
+	private Timestamp board_date;
 	public int getBoard_num() {
 		return board_num;
 	}
@@ -75,11 +74,12 @@ public class BoardBean {
 	public void setBoard_readcount(int board_readcount) {
 		this.board_readcount = board_readcount;
 	}
-	public Timestamp getTimestamp() {
-		return timestamp;
+	public Timestamp getBoard_date() {
+		return board_date;
 	}
-	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
+	public void setBoard_date(Timestamp board_date) {
+		this.board_date = board_date;
 	}
 	
+
 }

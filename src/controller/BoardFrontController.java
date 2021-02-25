@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import service.Action;
 import service.ActionForward;
 import service.BoardAddAction;
+import service.BoardListAction;
 
 /**
  * Servlet implementation class BoardFrontController
@@ -60,17 +61,31 @@ public class BoardFrontController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}
-		
-		if(forward != null) {
-			if(forward.isRedirect()) { // redirect 방식으로 포워딩
-				response.sendRedirect(forward.getPath());
-			}else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
-				dispatcher.forward(request, response);
+
+		// 글작성 폼
+		}else if(command.equals("/BoardForm.do")) {
+			forward = new ActionForward();
+			forward.setRedirect(false);
+			forward.setPath("/board/write.jsp");
+			
+		// 글목록
+		}else if(command.equals("/BoardListAction.do")) {
+			try {
+				action = new BoardListAction();
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
 			}
 		}
 		
+		if(forward != null) {
+			if(forward.isRedirect()) { 	// redirect 방식으로 포워딩
+				response.sendRedirect(forward.getPath());
+			}else {						// diapatcher 방식으로 포워딩
+				RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
+				dispatcher.forward(request, response);
+			}
+		}		
 	}
 
 }
