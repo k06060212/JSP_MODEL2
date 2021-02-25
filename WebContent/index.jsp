@@ -7,6 +7,9 @@
 <title>MODEL2 게시판</title>
 </head>
 <body>
-	MODEL2 게시판
+	model2 게시판
+<script>
+	location.href="./BoardListAction.do"	
+</script>
 </body>
 </html>

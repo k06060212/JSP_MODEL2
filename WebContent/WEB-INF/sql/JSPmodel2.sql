@@ -1,6 +1,7 @@
 select * from tab;
 select * from seq;
 select * from jspmodel2;
+--drop sequence seq¿Ã∏ß;
 
 create table jspmodel2(
 	board_num number,
@@ -17,7 +18,7 @@ create table jspmodel2(
 	primary key(board_num)
 );
 
-create sequence model2_seq
+create sequence jspmodel2_seq
 start with 1
 increment by 1
 nocache;
