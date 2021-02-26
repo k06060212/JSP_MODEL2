@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<a href="./BoardForm.do"></a><br>
+<a href="./BoardForm.do">글쓰기</a><br>
 글갯수 : ${listcount} 개
 
 <table border=1 width=700 align=center> 

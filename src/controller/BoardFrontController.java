@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import service.Action;
 import service.ActionForward;
 import service.BoardAddAction;
+import service.BoardDetailAction;
 import service.BoardListAction;
+import service.BoardModify;
+import service.BoardModifyAction;
 
 /**
  * Servlet implementation class BoardFrontController
@@ -24,21 +27,6 @@ public class BoardFrontController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("doGet");
-		
-		doProcess(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("doPost");
-		
-		doProcess(request, response);
-	}
 	
 	public void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
@@ -76,6 +64,27 @@ public class BoardFrontController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
+		}else if(command.equals("/BoardDetailAction.do")) {
+			try {
+				action = new BoardDetailAction();
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}else if(command.equals("/BoardModifyAction.do")) {
+			try {
+				action = new BoardModifyAction();
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}else if(command.equals("/BoardModify.do")){
+			try {
+				action = new BoardModify();
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if(forward != null) {
@@ -86,6 +95,21 @@ public class BoardFrontController extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 		}		
+	}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("doGet");
+		
+		doProcess(request, response);
+	}
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("doPost");
+		
+		doProcess(request, response);
 	}
 
 }

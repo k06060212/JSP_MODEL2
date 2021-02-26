@@ -92,6 +92,7 @@ public class BoardDAO {
 		return result;
 	}
 
+	// 글목록
 	public List<BoardBean> getlist(int start, int end) {
 		List<BoardBean> list = new ArrayList<BoardBean>();
 		Connection con = null;
@@ -138,6 +139,95 @@ public class BoardDAO {
 		
 		
 		return list;
+	}
+	
+	// 조회수 증가
+	public void readcountUpdate(int board_num) {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConnection();
+			
+			String sql="update jspmodel2 set board_readcount=board_readcount+1 where board_num = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1,  board_num);
+			pstmt.executeUpdate();
+	
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(con != null) {try{con.close();}catch(Exception e) {}}
+			if(pstmt != null) {try{pstmt.close();}catch(Exception e) {}}
+		}	
+	}
+
+	// 상세 페이지
+	public BoardBean getDetail(int board_num) {
+		BoardBean board = new BoardBean();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = getConnection();
+			
+			String sql="select * from jspmodel2 where board_num = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				board.setBoard_num(rs.getInt("board_num"));
+				board.setBoard_name(rs.getString("board_name"));
+				board.setBoard_pass(rs.getString("board_pass"));
+				board.setBoard_subject(rs.getString("board_subject"));
+				board.setBoard_content(rs.getString("board_content"));
+				board.setBoard_file(rs.getString("board_file"));
+				board.setBoard_re_ref(rs.getInt("board_re_ref"));
+				board.setBoard_re_lev(rs.getInt("board_re_lev"));
+				board.setBoard_re_seq(rs.getInt("board_re_seq"));
+				board.setBoard_readcount(rs.getInt("board_readcount"));
+				board.setBoard_date(rs.getTimestamp("board_date"));				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(con != null) {try{con.close();}catch(Exception e) {}}
+			if(pstmt != null) {try{pstmt.close();}catch(Exception e) {}}
+			if(rs != null) {try{rs.close();}catch(Exception e) {}}
+		}
+		
+		return board;
+	}
+
+	public int update(BoardBean board) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = getConnection();
+			
+			String sql = "update jspmodel2 set board_name=?, board_subject=?, board_content=? where board_num=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, board.getBoard_name());
+			pstmt.setString(2, board.getBoard_subject());
+			pstmt.setString(3, board.getBoard_content());
+			pstmt.setInt(4, board.getBoard_num());
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(con != null) {try{con.close();}catch(Exception e) {}}
+			if(pstmt != null) {try{pstmt.close();}catch(Exception e) {}}
+		}
+		return result;
 	}
 	
 }
