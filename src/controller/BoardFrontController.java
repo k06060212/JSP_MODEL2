@@ -12,51 +12,49 @@ import javax.servlet.http.HttpServletResponse;
 import service.Action;
 import service.ActionForward;
 import service.BoardAddAction;
+import service.BoardDelete;
 import service.BoardDetailAction;
 import service.BoardListAction;
 import service.BoardModify;
 import service.BoardModifyAction;
+import service.BoardReply;
+import service.BoardReplyAction;
 
 /**
  * Servlet implementation class BoardFrontController
  */
 @WebServlet("*.do")
 public class BoardFrontController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	
-	public void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	public void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String requestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String command = requestURI.substring(contextPath.length());
 		
-		System.out.println("requestURI : " + requestURI);
-		System.out.println("contextPath : " + contextPath);
-		System.out.println("command : " + command);
+		System.out.println("requestURI:"+ requestURI);  
+		System.out.println("contextPath:"+ contextPath);
+		System.out.println("command:"+ command);        
 		
-		Action action = null;
+		Action  action = null;
 		ActionForward forward = null;
 		
-		// 글작성
+		// 글작성 
 		if(command.equals("/BoardAddAction.do")) {
 			try {
-				action = new BoardAddAction(); 	// 업캐스팅
+				action = new BoardAddAction();   // 업캐스팅
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-
+			
 		// 글작성 폼
-		}else if(command.equals("/BoardForm.do")) {
+		}else if(command.equals("/BoardForm.do")) {	
 			forward = new ActionForward();
 			forward.setRedirect(false);
 			forward.setPath("/board/write.jsp");
 			
-		// 글목록
+		// 글목록	
 		}else if(command.equals("/BoardListAction.do")) {
 			try {
 				action = new BoardListAction();
@@ -64,6 +62,8 @@ public class BoardFrontController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
+			
+		// 상세 페이지	
 		}else if(command.equals("/BoardDetailAction.do")) {
 			try {
 				action = new BoardDetailAction();
@@ -71,16 +71,53 @@ public class BoardFrontController extends HttpServlet {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}else if(command.equals("/BoardModifyAction.do")) {
+			
+		// 댓글 폼	
+		}else if(command.equals("/BoardReplyAction.do")) {
 			try {
-				action = new BoardModifyAction();
+				action = new BoardReplyAction();
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-		}else if(command.equals("/BoardModify.do")){
+			
+		// 댓글 작성	
+		}else if(command.equals("/BoardReply.do")) {
+			try {
+				action = new BoardReply();
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		// 수정 폼	
+		}else if(command.equals("/BoardModifyAction.do")) {
+			try {
+				action = new BoardModifyAction(); 
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		// 글수정	
+		}else if(command.equals("/BoardModify.do")) {
 			try {
 				action = new BoardModify();
+				forward = action.execute(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		// 삭제 폼	
+		}else if(command.equals("/BoardDeleteAction.do")) {
+			forward = new ActionForward();
+			forward.setRedirect(false);	// dispatcher 방식으로 포워딩
+			forward.setPath("./board/delete.jsp");
+		
+		// 글삭제
+		}else if(command.equals("/BoardDelete.do")) {
+			try {
+				action = new BoardDelete();
 				forward = action.execute(request, response);
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -88,26 +125,27 @@ public class BoardFrontController extends HttpServlet {
 		}
 		
 		if(forward != null) {
-			if(forward.isRedirect()) { 	// redirect 방식으로 포워딩
+			if(forward.isRedirect()) {  // redirect 방식으로 포워딩
 				response.sendRedirect(forward.getPath());
-			}else {						// diapatcher 방식으로 포워딩
-				RequestDispatcher dispatcher = request.getRequestDispatcher(forward.getPath());
+			}else {						// dispatcher 방식으로 포워딩
+				RequestDispatcher dispatcher = 
+						request.getRequestDispatcher(forward.getPath());
 				dispatcher.forward(request, response);
 			}
-		}		
-	}
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		}
 		
-		System.out.println("doGet");
+	} 	
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		System.out.println("get");
 		
 		doProcess(request, response);
 	}
 	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("doPost");
+		// TODO Auto-generated method stub
+		System.out.println("post");
 		
 		doProcess(request, response);
 	}

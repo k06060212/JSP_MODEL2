@@ -14,32 +14,33 @@ public class BoardListAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("BoardListAction");
-		
-		int page = 1;	// 현재 페이지 번호
-		int limit = 10;	// 한 화면에 출력할 데이터 갯수
-		
-		if(request.getParameter("page") != null) {
+
+		int page = 1; 				// 현재 페이지 번호
+		int limit = 10; 			// 한 화면에 출력할 데이터 갯수
+
+		if (request.getParameter("page") != null) {
 			page = Integer.parseInt(request.getParameter("page"));
 		}
-		
+
 		int startRow = (page - 1) * limit + 1;
 		int endRow = page * limit;
-		
+
 		BoardDAO dao = BoardDAO.getInstance();
-		int listcount = dao.getCount();
-		System.out.println("listcount : " + listcount);
-		
-		List<BoardBean> boardlist = dao.getlist(startRow, endRow);
-		System.out.println("boardlist : " + boardlist);
-		
+		int listcount = dao.getCount(); // 총 데이터 갯수
+		System.out.println("listcount:" + listcount);
+
+		List<BoardBean> boardlist = dao.getList(startRow, endRow);
+		System.out.println("boardlist:" + boardlist);
+
 		// 총페이지수
 		int pageCount = listcount / limit + ((listcount % limit == 0) ? 0 : 1);
-		
-		int startPage = ((page - 1) / 10) * limit + 1; // 1, 11, 21..
-		int endPage = startPage + 10 - 1;
-		
-		if(endPage > pageCount) endPage = pageCount;
-		
+
+		int startPage = ((page - 1) / 10) * limit + 1; 
+		int endPage = startPage + 10 - 1; 
+
+		if (endPage > pageCount)
+			endPage = pageCount;
+
 		request.setAttribute("page", page);
 		request.setAttribute("listcount", listcount);
 		request.setAttribute("boardlist", boardlist);
@@ -48,12 +49,10 @@ public class BoardListAction implements Action {
 		request.setAttribute("endPage", endPage);
 
 		ActionForward forward = new ActionForward();
-		forward.setRedirect(false);				// dispatcher 방식으로 포워딩
-		forward.setPath("./board/list.jsp");	// 목록페이지
-		
+		forward.setRedirect(false); 			// dispatcher 방식으로 포워딩
+		forward.setPath("./board/list.jsp"); 	// 목록페이지
+
 		return forward;
 	}
-	
-	
 
 }
